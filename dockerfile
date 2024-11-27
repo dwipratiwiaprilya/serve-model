@@ -14,8 +14,8 @@ WORKDIR /app
 
 COPY . .
 
+ENV PORT=8080
 EXPOSE 8080
-ENV PORT
 
 CMD ["python", "app.py"]
 
