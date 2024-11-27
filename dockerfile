@@ -23,7 +23,8 @@ WORKDIR /app
 COPY . .
 
 # Expose the application port
-EXPOSE 5000
+EXPOSE 8080
+ENV PORT
 
 # Command to run the Flask application directly with Python
 CMD ["python", "app.py"]
