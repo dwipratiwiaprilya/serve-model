@@ -8,13 +8,13 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install Python dependencies in a separate layer
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Stage 2: Runtime environment
 FROM python:3.10-slim as runtime
 
 # Copy the installed dependencies from the builder image
-COPY --from=builder /install /usr/local
+COPY --from=builder /usr/local /usr/local
 
 # Set the working directory
 WORKDIR /app

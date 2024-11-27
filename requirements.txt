@@ -1,5 +1,5 @@
 flask
-tensorflow==2.18.0  # Adjust based on the version you're using
+tensorflow-cpu==2.18.0
 Pillow
 numpy
 gunicorn
