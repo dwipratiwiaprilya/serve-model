@@ -9,6 +9,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsm6 \
     libxrender1 \
     libxext6 \
+    build-essential \
+    python3-dev \
+    python3-distutils \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies in a separate layer
