@@ -1,37 +1,37 @@
 # Stage 1: Build environment
-FROM python:3.12-slim AS builder
+FROM python:3.12-slim as builder
 
-WORKDIR /app
-
-# Install system dependencies required for Python libraries
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libglib2.0-0 \
-    libsm6 \
-    libxrender1 \
-    libxext6 \
+# Install necessary build tools (including distutils)
+RUN apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
     python3-distutils \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies in a separate layer
+# Set the working directory
+WORKDIR /app
+
+# Copy the requirements file
 COPY requirements.txt .
+
+# Install Python dependencies in a separate layer
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # Stage 2: Runtime environment
-FROM python:3.12-slim
+FROM python:3.12-slim as runtime
 
-WORKDIR /app
-
-# Copy only the installed Python packages from the builder stage
+# Copy the installed dependencies from the builder image
 COPY --from=builder /install /usr/local
 
-# Copy the application files
+# Set the working directory
+WORKDIR /app
+
+# Copy the rest of the application files
 COPY . .
 
-# Expose the port the app runs on
+# Expose the application port
 EXPOSE 5000
 
-# Use Gunicorn as the application server
+# Command to run the application with Gunicorn
 CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
 
